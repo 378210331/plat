@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="SecurityManager"></property>
+        <property name="loginUrl" value="/"/>
+        <property name="successUrl" value="/index"/>
+        <property name="unauthorizedUrl" value="/common/500.jsp"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /assets/** = anon
+                /login = anon
+                /submit = anon
+                /logout = logout
+                /mybatis/** = anon
+                /**=authc
+            </value>
+        </property>
+    </bean>
+
+    <!--
+定时清理僵尸session，Shiro会启用一个后台守护线程定时执行清理操作
+用户直接关闭浏览器造成的孤立会话
+-->
+    <bean id="sessionValidationScheduler"
+          class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+        <property name="interval" value="3600000"/>
+    </bean>
+
+
+
+    <bean class="org.apache.shiro.web.mgt.DefaultWebSecurityManager" id="SecurityManager">
+        <property name="realm" ref="realm"></property>
+        <property name="rememberMeManager" ref="cookieRememberMeManager"></property>
+    </bean>
+
+
+   <!-- <bean id="realm" class="ShiroRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"></property>
+    </bean>-->
+
+<!--    <bean id="realm" class="ShiroRealm">
+        &lt;!&ndash;<property name="credentialsMatcher" ref="credentialsMatcher"></property>&ndash;&gt;
+    </bean>-->
+
+    <bean id="realm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="authenticationQuery" value="select login_password from t_sys_user where login_name = ? and yxbz = 'Y' and yxsjq &lt; now() and yxsjz &gt; now()"></property>
+        <property name="userRolesQuery" value="select r.rolename from sys_user u,sys_role r,sys_user_role s where u.username = ? and s.yxbz = 'Y' and u.uuid = s.userid and r.uuid = s.roleid "></property>
+        <property name="permissionsQuery" value="select p.permissions from sys_permissions p,sys_roles_permissions rp,sys_role r where r.rolename = ? and r.uuid = rp.roleid and rp.permissionsid = p.uuid and rp.yxbz = 'Y'"></property>
+    </bean>
+
+
+
+
+    <!-- 加密 -->
+    <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher" id="credentialsMatcher">
+        <property name="hashAlgorithmName" value="md5"></property>
+        <property name="hashIterations" value="1"></property>
+    </bean>
+
+
+    <bean class="org.apache.shiro.web.mgt.CookieRememberMeManager" id="cookieRememberMeManager">
+        <property name="cookie" ref="cookie"></property>
+    </bean>
+
+    <bean class="org.apache.shiro.web.servlet.SimpleCookie" id="cookie">
+        <constructor-arg value="rememberMe"></constructor-arg>
+        <property name="maxAge" value="20000000"></property>
+    </bean>
+</beans>

@@ -1,0 +1,43 @@
+package com.hsy.platform.common;
+
+public class FileConstants {
+    public static final String FILE_EXT_NAME_TXT = ".txt";
+    public static final String FILE_EXT_NAME_XML = ".xml";
+    public static final String FILE_EXT_NAME_CSV = ".csv";
+    public static final String FILE_EXT_NAME_ZIP = ".zip";
+    public static final String FILE_EXT_NAME_DAT = ".dat";
+    public static final String FILE_EXT_NAME_XLS = ".xls";
+    public static final String FILE_EXT_NAME_DOC = ".doc";
+    public static final String FILE_EXT_NAME_RAR = ".rar";
+    public static final String CSV_CONTENT_TYPE = "text/comma-separated-values;";
+    public static final String ZIP_CONTENT_TYPE = "application/x-zip-compressed;";
+    public static final String XML_CONTENT_TYPE = "text/xml;";
+    public static final String TXT_CONTENT_TYPE = "text/plain;";
+    public static final String HTML_CONTENT_TYPE = "text/html;";
+    public static final String DAT_CONTENT_TYPE = "application/octet-stream;";
+    public static final String XLS_CONTENT_TYPE = "application/vnd.ms-excel";
+    public static final String CHARACTER_ENCODING_UTF8 = "UTF-8";
+    public static final String CHARACTER_ENCODING_GBK = "GBK";
+    public static final String CHARACTER_ENCODING_GB2312 = "GB2312";
+    public static final String CHARACTER_ENCODING_ISO = "ISO-8859-1";
+    public static final int FILE_MAX_SIZE = 102400;
+    public static final String PROP_JAVA_IO_TMP = "java.io.tmpdir";
+    public static final String TEMP_FILE_START_STR = "ctais_app_temp_file";
+    public static final String TEXT_FILE_SPLIT_VERTICAL = "|";
+    public static final String TEXT_FILE_SPLIT_COMMA = ",";
+    public static final String TEXT_FILE_SPLIT_BLANK = " ";
+    public static final String TEXT_FILE_SPLIT_UNDEE_ONE = "~";
+    public static final String TEXT_FILE_SPLIT_UNDEE = "~~";
+    public static final char TEXT_FILE_SPLIT_VERTICAL_CHAR = '|';
+    public static final char TEXT_FILE_SPLIT_COMMA_CHAR = ',';
+    public static final char TEXT_FILE_SPLIT_BLANK_CHAR = ' ';
+    public static final char TEXT_FILE_SPLIT_UNDEE_CHAR = '~';
+    public static final char FILE_DIR_SPLIT_BACKLASH = '\\';
+    public static final char FILE_DIR_SPLIT_DIAGONAL = '/';
+    public static final String FILE_DIR_SPLIT_BACKLASH_STR = "\\";
+    public static final String FILE_DIR_SPLIT_DIAGONAL_STR = "/";
+    public static final String DEFAULT_RESOURCE_LOG4J_FILE = "/log4j.properties";
+    public static final String JAVA_NET_PROTOCOL_HTTP = "http";
+    public static final String JAVA_NET_PROTOCOL_FTP = "ftp";
+    public static final String JAVA_NET_PROTOCOL_NNTP = "nntp";
+}
