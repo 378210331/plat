@@ -20,20 +20,20 @@
 
 
 
-    <select id="listPage" parameterType="page" resultType="pd">
+    <select id="listPage" parameterType="pd" resultType="pd">
         select * from t_sys_role t
         <where>
-            <if test="pd.roleId!=null and pd.roleId!='' ">
+            <if test="roleId!=null and roleId!='' ">
                 t.role_id = #{pd.roleId}
             </if>
-            <if test="pd.roleName!=null and pd.roleName!='' ">
-                and   t.role_name like   '%' || #{pd.roleName} || '%'
+            <if test="roleName!=null and roleName!='' ">
+                and   t.role_name like   '%' || #{roleName} || '%'
             </if>
-            <if test="pd.rolems!=null and pd.rolems!='' ">
-                and  t.rolems like  '%' || #{pd.rolems} || '%'
+            <if test="rolems!=null and rolems!='' ">
+                and  t.rolems like  '%' || #{rolems} || '%'
             </if>
-            <if test="pd.roleType!=null and pd.roleType!='' ">
-                and  t.role_type = #{pd.roleType}
+            <if test="roleType!=null and roleType!='' ">
+                and  t.role_type = #{roleType}
             </if>
         </where>
     </select>

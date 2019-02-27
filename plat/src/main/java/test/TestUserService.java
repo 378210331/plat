@@ -1,6 +1,6 @@
 package test;
 
-import com.hsy.platform.plugin.Page;
+import com.hsy.platform.plugin.LayPage;
 import com.hsy.platform.plugin.PageData;
 import com.hsy.platform.service.UserService;
 import org.junit.Test;
@@ -14,10 +14,10 @@ public class TestUserService  extends BaseTest{
 
     @Test
     public  void list() throws Exception{
-        Page page = new Page();
+        LayPage page = new LayPage();
         PageData pd = new PageData();
         pd.addParam("loginName","super");
-        page.setTotal(100);
+        page.setCount(100);
         page.setPd(pd);
         page =  userService.listPage(page);
         System.out.println();

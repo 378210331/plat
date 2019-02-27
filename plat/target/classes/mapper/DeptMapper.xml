@@ -20,7 +20,7 @@
 
 
 
-    <select id="listPage" parameterType="page" resultType="pd">
+    <select id="listPage" parameterType="pd" resultType="pd">
         select t.swjg_dm,t.swjgmc,t.lxdz,t.lxdh,t.sjswjg_dm,j.swjgmc sjswjgmc,decode(t.JGBZ,'0','机关','1','部门') jgbz,t.jgbz jgbz_dm,
         to_char(t.yxqsrq,'yyyy-MM-dd')yxqsrq ,to_char(t.yxzzrq,'yyyy-MM-dd')yxzzrq from t_sys_swjg t,t_sys_swjg j
         <where>

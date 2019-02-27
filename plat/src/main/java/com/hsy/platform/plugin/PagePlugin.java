@@ -63,18 +63,16 @@ public class PagePlugin implements Interceptor {
 					}
 					rs.close();
 					countStmt.close();
-					Page page = null;
-					if(parameterObject instanceof Page){	//参数就是Page实体
-						 page = (Page) parameterObject;
-						 page.setEntityOrField(true);	 
-						page.setTotal(count);
+					LayPage page = null;
+					if(parameterObject instanceof LayPage){	//参数就是Page实体
+						 page = (LayPage) parameterObject;
+						page.setCount(count);
 					}else{	//参数为某个实体，该实体拥有Page属性
 						Field pageField = ReflectHelper.getFieldByFieldName(parameterObject,"page");
 						if(pageField!=null){
-							page = (Page) ReflectHelper.getValueByFieldName(parameterObject,"page");
-							if(page==null) page = new Page();
-							page.setEntityOrField(false); 
-							page.setTotal(count);
+							page = (LayPage) ReflectHelper.getValueByFieldName(parameterObject,"page");
+							if(page==null) page = new LayPage();
+							page.setCount(count);
 							ReflectHelper.setValueByFieldName(parameterObject,"page", page); //通过反射，对实体对象设置分页对象
 						}else{
 							throw new NoSuchFieldException(parameterObject.getClass().getName()+"不存在 page 属性！");
@@ -140,18 +138,18 @@ public class PagePlugin implements Interceptor {
 	 * @param page
 	 * @return
 	 */
-	private String generatePageSql(String sql,Page page){
+	private String generatePageSql(String sql,LayPage page){
 		if(page!=null && StringUtils.isNotBlank(dialect)){
 			StringBuffer pageSql = new StringBuffer();
 			if("mysql".equals(dialect)){
 				pageSql.append(sql);
-				pageSql.append(" limit "+page.getCurrentResult()+","+page.getPageSize());
+				pageSql.append(" limit "+page.getCurrentResult()+","+page.getLimit());
 			}else if("oracle".equals(dialect)){
 				pageSql.append("select * from (select tmp_tb.*,ROWNUM row_id from (");
 				pageSql.append(sql);
 				//pageSql.append(") as tmp_tb where ROWNUM<=");
 				pageSql.append(") tmp_tb where ROWNUM<=");
-				pageSql.append(page.getCurrentResult()+page.getPageSize());
+				pageSql.append(page.getCurrentResult()+page.getLimit());
 				pageSql.append(") where row_id>");
 				pageSql.append(page.getCurrentResult());
 			}

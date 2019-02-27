@@ -26,26 +26,26 @@
 
 
 
-    <select id="listPage" parameterType="page" resultType="pd">
+    <select id="listPage" parameterType="pd" resultType="pd">
         select * from t_sys_system t
         <where>
-            <if test="pd.systemId!=null and pd.systemId!='' ">
-                t.system_id = #{pd.systemId}
+            <if test="systemId!=null and systemId!='' ">
+                t.system_id = #{systemId}
             </if>
-            <if test="pd.systemName!=null and pd.systemName!='' ">
-                and   t.system_name like   '%' || #{pd.systemName} || '%'
+            <if test="systemName!=null and systemName!='' ">
+                and   t.system_name like   '%' || #{systemName} || '%'
             </if>
-            <if test="pd.dec!=null and pd.dec!='' ">
-                and  t.dec like  '%' || #{pd.dec} || '%'
+            <if test="dec!=null and dec!='' ">
+                and  t.dec like  '%' || #{dec} || '%'
             </if>
-            <if test="pd.systemType!=null and pd.systemType!='' ">
-                and  t.system_type = #{pd.systemType}
+            <if test="systemType!=null and systemType!='' ">
+                and  t.system_type = #{systemType}
             </if>
-            <if test="pd.ip!=null and pd.ip!='' ">
-                and  t.ip  like  '%' || #{pd.ip} || '%'
+            <if test="ip!=null and ip!='' ">
+                and  t.ip  like  '%' || #{ip} || '%'
             </if>
-            <if test="pd.defaultUrl!=null and pd.defaultUrl!='' ">
-                and  t.default_url  like  '%' || #{pd.defaultUrl} || '%'
+            <if test="defaultUrl!=null and defaultUrl!='' ">
+                and  t.default_url  like  '%' || #{defaultUrl} || '%'
             </if>
         </where>
     </select>

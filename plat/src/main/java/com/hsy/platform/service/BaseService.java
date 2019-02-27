@@ -3,10 +3,13 @@ package com.hsy.platform.service;
 
 import com.hsy.platform.dao.DaoSupport;
 import com.hsy.platform.dao.JdbcDao;
-import com.hsy.platform.plugin.Page;
+import com.hsy.platform.plugin.LayPage;
 import com.hsy.platform.plugin.PageData;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +26,10 @@ public abstract class BaseService {
      * @param pageData
      * @throws Exception
      */
+    @Transactional(rollbackFor = {Exception.class})
     public void save(PageData pageData)throws Exception{
         dao.save(getMapperName()+".save", pageData);
+        throw new FileNotFoundException();
     }
 
     /**
@@ -32,6 +37,7 @@ public abstract class BaseService {
      * @param pdList
      * @throws Exception
      */
+    @Transactional(rollbackFor = {Exception.class})
     public void batchSave(List<PageData> pdList)throws Exception{
         dao.batchSave(getMapperName()+".batchSave", pdList);
     }
@@ -41,6 +47,7 @@ public abstract class BaseService {
      * @param pd
      * @throws Exception
      */
+    @Transactional(rollbackFor = {Exception.class})
     public void update(PageData pd)throws Exception{
         dao.update(getMapperName()+".update", pd);
     }
@@ -62,12 +69,30 @@ public abstract class BaseService {
      * @return
      * @throws Exception
      */
-    public Page listPage(Page page) throws Exception {
+    public LayPage listPage(LayPage page) throws Exception {
         PageData pd = page.getPd();
         pd.setPage(page);
         List<PageData>  dataList = dao.queryPageDataListByKey(getMapperName()+".listPage", pd);
-        page.setRows(dataList);
-        page.setTotal(pd.getPage().getTotal());
+        page.setData(dataList);
+        page.setCount(pd.getPage().getCount());
+        return page;
+    }
+
+    /**
+     * 获取分页数据
+     * @param page
+     * @return
+     * @throws Exception
+     */
+    public LayPage listPageByKey(LayPage page,String key) throws Exception {
+        if(!StringUtils.contains(key,"listPage")){
+            throw new Exception("获取分页数据的key需要包含listPage字符");
+        }
+        PageData pd = page.getPd();
+        pd.setPage(page);
+        List<PageData>  dataList = dao.queryPageDataListByKey(getMapperName()+"."+key, pd);
+        page.setData(dataList);
+        page.setCount(pd.getPage().getCount());
         return page;
     }
 
@@ -96,6 +121,7 @@ public abstract class BaseService {
      * @param pd
      * @throws Exception
      */
+    @Transactional(rollbackFor = {Exception.class})
     public void delete(PageData pd) throws Exception {
         dao.delete(getMapperName()+".delete", pd);
     }
@@ -105,6 +131,7 @@ public abstract class BaseService {
      * @param pdList
      * @throws Exception
      */
+    @Transactional(rollbackFor = {Exception.class})
     public void batchDelete(List<PageData> pdList) throws Exception {
         dao.batchDelete(getMapperName()+".delete", pdList);
     }

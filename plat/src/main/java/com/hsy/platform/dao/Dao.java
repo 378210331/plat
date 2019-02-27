@@ -99,24 +99,7 @@ public interface Dao {
 	 */
 	public List<PageData> queryPageDataListByKey(String sqlKey, Object obj) throws Exception;
 	
-	
-	
-	/**
-	 * 获取map
-	 * @param sql
-	 * @param param
-	 * @return
-	 */
-	public Map<String,Object> queryMapBySql(String sql, Object... param);
-	
-	/**
-	 * 获取list
-	 * @param sql
-	 * @param param
-	 * @return
-	 */
-	public List<Map<String,Object>> queryMapListBySql(String sql, Object... param);
-	 
+
 	/**
 	 * 获取记录数
 	 * @param sqlKey
@@ -125,13 +108,6 @@ public interface Dao {
 	 */
 	public int getCountByKey(String sqlKey, Object obj);
 	
-	/**
-	 * 获取记录数
-	 * @param sql
-	 * @param param
-	 * @return
-	 */
-	public int getCountBySql(String sql, Object... param);
 
 	public SqlSession getSqlSession();
 }

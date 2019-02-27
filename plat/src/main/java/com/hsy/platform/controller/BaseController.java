@@ -1,6 +1,6 @@
 package com.hsy.platform.controller;
 
-import com.hsy.platform.plugin.Page;
+import com.hsy.platform.plugin.LayPage;
 import com.hsy.platform.plugin.PageData;
 import com.hsy.platform.utils.UuidUtil;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public abstract class BaseController{
 
     public abstract ModelAndView onEdit() throws Exception;
 
-    public abstract Page list(Page page) throws Exception;
+    public abstract LayPage list(LayPage page) throws Exception;
 
     public abstract Map<String, Object> delete() throws Exception;
 
@@ -93,14 +93,14 @@ public abstract class BaseController{
         return map;
     }
 
-    public Map<String, Object> getDataMap(boolean res, Object data,Page page) {
+    public Map<String, Object> getDataMap(boolean res, Object data, LayPage page) {
         HashMap<String, Object> map = new HashMap();
         if(res){
             map.put("code",0);
         }
         map.put("res",res);
         if(page != null){
-            map.put("count",page.getTotal());
+            map.put("count",page.getCount());
         }
         map.put("data", data);
         return map;
@@ -148,9 +148,9 @@ public abstract class BaseController{
     /**
      * 得到分页列表的信息
      */
-    public Page getPage(){
+    public LayPage getPage(){
 
-        return new Page();
+        return new LayPage();
     }
 
 

@@ -25,17 +25,18 @@ public class AllMenuRowMapper implements RowMapper {
         String menuJc = resultSet.getString("menu_jc");
         String menuUrl = resultSet.getObject("menu_url")==null?"":resultSet.getString("menu_url");
         String ip = resultSet.getObject("ip")==null?"":resultSet.getString("ip");
-        String menuTyle = resultSet.getString("menu_type");//菜单类型  1 菜单 2功能
-        if("1".equalsIgnoreCase(menuTyle)){
+        String menuType = resultSet.getString("menu_type");//菜单类型  0 菜单 1功能
+        if("0".equalsIgnoreCase(menuType)){
             List<Map<String,Object>> child = menuService.getAllMenu(menuId);
             if(child.size()>0){
-                result.put("child",child);
+                result.put("children",child);
             }
         }
         result.put("code", menuId);
         result.put("title", menuName);
-        result.put("menuUrl",menuUrl);
-        result.put("ip",ip);
+        if("1".equals(menuType)){
+            result.put("href",ip + menuUrl);
+        }
         result.put("icon", resultSet.getObject("menu_icon")==null?"":resultSet.getString("menu_icon"));
         return result;
     }

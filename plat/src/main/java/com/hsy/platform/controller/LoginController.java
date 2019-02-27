@@ -1,6 +1,6 @@
 package com.hsy.platform.controller;
 
-import com.hsy.platform.plugin.Page;
+import com.hsy.platform.plugin.LayPage;
 import com.hsy.platform.plugin.PageData;
 import com.hsy.platform.service.PosService;
 import com.hsy.platform.service.UserService;
@@ -146,7 +146,7 @@ public class LoginController extends BaseController {
     }
 
     @Override
-    public Page list(Page page) throws Exception {
+    public LayPage list(LayPage page) throws Exception {
         return null;
     }
 

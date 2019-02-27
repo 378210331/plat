@@ -15,7 +15,6 @@
 
 	<typeAliases>
 		<typeAlias type="com.hsy.platform.plugin.PageData" alias="pd"/>
-		<typeAlias type="com.hsy.platform.plugin.Page" alias="page"/>
 		<typeAlias type="com.hsy.platform.entity.TSysPos" alias="pos"/>
 		<typeAlias alias="Integer" type="java.lang.Integer" />
 		<typeAlias alias="Long" type="java.lang.Long" />

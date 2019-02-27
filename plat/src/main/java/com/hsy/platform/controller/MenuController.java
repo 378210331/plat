@@ -1,10 +1,11 @@
 package com.hsy.platform.controller;
 
-import com.hsy.platform.plugin.Page;
+
+import com.hsy.platform.plugin.LayPage;
 import com.hsy.platform.plugin.PageData;
 import com.hsy.platform.service.MenuService;
 import com.hsy.platform.service.SystemService;
-import com.hsy.platform.utils.UuidUtil;
+import com.hsy.platform.utils.LoginInfoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,9 @@ import java.util.Map;
 
 @RequestMapping("/menu/")
 @Controller
-public class MenuController extends  BaseController {
+public class MenuController extends BaseController {
 
-    static final Logger logger = LoggerFactory.getLogger(MenuController.class);
+    Logger log =   LoggerFactory.getLogger(MenuController.class);
 
     @Resource
     MenuService menuService;
@@ -31,7 +32,10 @@ public class MenuController extends  BaseController {
     @RequestMapping("getRoleMenu")
     @ResponseBody
     public List<Map<String,Object>> getRoleMenu(){
-        return null;
+        if("89757".equalsIgnoreCase(LoginInfoUtils.getUserId())){
+            return menuService.getAllMenu(null);
+        }
+        return menuService.getRoleMenu(LoginInfoUtils.getUserId(),null);
     }
 
     @RequestMapping("init")
@@ -47,9 +51,9 @@ public class MenuController extends  BaseController {
     public ModelAndView onEdit() throws Exception {
         ModelAndView mv = new ModelAndView("security/menu_edit");
         mv.addObject("menuId",getRequest().getParameter("menuId"));
-        mv.addObject("newId", UuidUtil.get32UUID());
+        mv.addObject("newId",menuService.createMenuId());
         List<PageData> systemList = systemService.getPageDataList(null);
-        PageData param = new PageData().addParam("menuType","1");
+        PageData param = new PageData().addParam("menuType","0");
         List<PageData> pMenuList = menuService.getPageDataList(param);
         mv.addObject("systemList",systemList);
         mv.addObject("pMenuList",pMenuList);
@@ -59,27 +63,28 @@ public class MenuController extends  BaseController {
 
     @RequestMapping("list")
     @ResponseBody
-    public Page list(Page page) throws Exception {
+    public LayPage list(LayPage page) throws Exception {
         page.setPd(this.getPageData());
         page = menuService.listPage(page);
         return page ;
     }
 
+
     @RequestMapping("query")
     @ResponseBody
     public Map<String,Object> query() throws Exception {
         PageData pd = getPageData();
-          List<PageData>  list =  menuService.getPageDataList(pd);
-          return this.getDataMap(true,list);
+        List<PageData>  list =  menuService.getPageDataList(pd);
+        return this.getDataMap(true,list);
     }
 
     @RequestMapping("delete")
     @ResponseBody
     public Map<String, Object> delete() throws Exception {
-         PageData pd = getPageData();
-            menuService.delete(pd);
-            return getResultMap(true,DELETE_SUCCESS);
-        }
+        PageData pd = getPageData();
+        menuService.delete(pd);
+        return getResultMap(true,DELETE_SUCCESS);
+    }
 
     @RequestMapping("save")
     @ResponseBody

@@ -15,12 +15,12 @@ public class PageData extends HashMap implements Map{
 	HttpServletRequest request;
 
 
-	Page page;//作为参数接受来自拦截器返回的page信息
-	public Page getPage() {
+	LayPage page;//作为参数接受来自拦截器返回的page信息
+	public LayPage getPage() {
 		return page;
 	}
 
-	public void setPage(Page page) {
+	public void setPage(LayPage page) {
 		this.page = page;
 	}
 

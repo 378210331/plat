@@ -1,78 +1,94 @@
 package com.hsy.platform.dao;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.hsy.platform.plugin.SimpleRowMapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Map;
 
 @Repository
-public class JdbcDao   implements ApplicationContextAware {
+public class JdbcDao implements ApplicationContextAware {
 
-    public Integer queryForInt(String sql ,Object... args){
-        Number number = (Number)this.getJdbcTemplate().queryForObject(sql, args, Integer.class);
-        return number != null ? number.intValue() : 0;
-    }
-
-    public int queryForInt(String sql, Map<String, ?> paramMap) throws DataAccessException {
-        Number number =  getNamedParameterJdbcTemplate().queryForObject(sql,paramMap,Integer.class);
-        return number != null ? number.intValue() : 0;
-    }
-
-
-    @Autowired
-    @Qualifier("jdbcTemplate")
-    public JdbcTemplate jdbcTemplate;
+    @Resource(name = "jdbcTemplate")
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     @Qualifier("namedParameterJdbcTemplate")
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public String getPaginationSql(String sql, int pageSize, int pageIndex) {
-        if(pageIndex>0 && pageSize >0){
-            int startNo = (pageIndex - 1) * pageSize;
-
-          /*  String paginationSql = "select * from (select A.*,ROWNUM RN from ("
-                    + sql + ") A WHERE ROWNUM <= " + (startNo + pageSize)
-                    + ") WHERE RN > " + startNo;*/
-          String paginationSql = "select * from ("+sql + ") limit "+startNo+","+pageSize;
-            return paginationSql;
-        }else{
-            return sql;
-        }
-    }
-
-    public String getCountSql(String sql){
-
-        return "select count(1) from (" + sql + ")";
-    }
-
-
     protected ApplicationContext applicationContext;
 
-    protected static Logger log = LoggerFactory.getLogger(JdbcDao.class);
-
-    public void setApplicationContext(ApplicationContext applicationContext)
-            throws BeansException {
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
+
+    public JdbcTemplate getJdbcTemplate() {
+        return jdbcTemplate;
+    }
+    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+        return namedParameterJdbcTemplate;
+    }
+
+    /**
+     * 根据sql查询map
+     * @param sql
+     * @return
+     */
+    public Map<String,Object> queryMapBySql(String sql){
+        return jdbcTemplate.queryForMap(sql,new SimpleRowMapper());
     }
 
 
-    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
-        return  namedParameterJdbcTemplate;
+    /**
+     * 根据sql 查询 Map
+     * @param sql
+     * @param param
+     * @return
+     */
+    public Map<String,Object> queryMapBySql(String sql,Object...param){
+        return jdbcTemplate.queryForMap(sql,param,new SimpleRowMapper());
+    }
+
+
+    /**
+     * 根据sql 查询 Map（驼峰）
+     * @param sql
+     * @param param
+     * @return
+     */
+    public Map<String,Object> queryMapBySql(String sql,Map<String,Object> param){
+        return namedParameterJdbcTemplate.queryForObject(sql,param,new SimpleRowMapper());
+    }
+
+    /**
+     * 根据sql 查询 List<Map>
+     * @param sql
+     * @param param
+     * @return
+     */
+    public List<Map<String,Object>> queryMapListBySql(String sql, Object...param){
+        return jdbcTemplate.queryForList(sql,param,new SimpleRowMapper());
+    }
+
+    /**
+     * 根据sql 查询 List<Map>
+     * @param sql
+     * @param param
+     * @return
+     */
+    public List<Map<String,Object>> queryMapListBySql(String sql,Map<String,Object> param){
+        return namedParameterJdbcTemplate.query(sql,param,new SimpleRowMapper());
     }
 
     public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(String dataSourceName) {
@@ -103,12 +119,35 @@ public class JdbcDao   implements ApplicationContextAware {
         }
     }
 
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
+
+    public String getPaginationSql(String sql, int pageSize, int pageIndex) {
+        if(pageIndex>0 && pageSize >0){
+            int startNo = (pageIndex - 1) * pageSize;
+
+          /*  String paginationSql = "select * from (select A.*,ROWNUM RN from ("
+                    + sql + ") A WHERE ROWNUM <= " + (startNo + pageSize)
+                    + ") WHERE RN > " + startNo;*/
+            String paginationSql = "select * from ("+sql + ") limit "+startNo+","+pageSize;
+            return paginationSql;
+        }else{
+            return sql;
+        }
     }
 
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public String getCountSql(String sql){
+
+        return "select count(1) from (" + sql + ")";
+    }
+
+
+    /**
+     * 根据sql查询数量
+     * @param sql
+     * @param param
+     * @return
+     */
+    public int getCountBySql(String sql,Object...param){
+        return jdbcTemplate.queryForObject(sql,param,Integer.class);
     }
 
 }

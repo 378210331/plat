@@ -16,63 +16,17 @@ function  onBeforeLoad(param)  {
     delete param.page;
 }
 
-var defaultGrid = {
-    onBeforeLoad:onBeforeLoad,
-    url:"",
-    nowrap:false, //设置为true，当数据长度超出列宽时将会自动截取。
-    rownumbers:false,//设置为true将显示行数。
-    pageSize:20,
-    striped:true,//设置为true将交替显示行背景。
-    singleSelect:true,
-    pagination:true,
-    queryParams:{},
-    columns:[],
-    onDblClickRow:""
-}
-/**
- * datagrid兼容后端，基础配置 end
- */
-
-
-
-/**
- * 打开新tab页
- * @param url
- * @param title
- */
-function openNewTab(url, title) {
-    var temp = window.LayoutTab;
-    debugger
-    window.LayoutTab.openTabWin({
-        type: 2,
-        title: title,
-        iconFont: 'i iconfont icon-cehuixiaohewenjian',
-        icon: contextPath+'/znxzbg/images/index/icon-10.png',
-        url: url
-    });
+var defaultGrid =
+{
+     elem : '#table'
+    ,url:_ctx + '/menu/list'
+    ,toolbar: 'default'
+    ,skin:'line'
+    ,cols: [[]]
+    ,page: true
+    ,loading: true
+    ,queryParams:{}
 };
-
-
-/**
- * bootstrarp 分页初始化
- * @param res
- * @param callback
- */
-function setPage(res,callback) {
-    if($('.pagination') .html() == null){
-        var pageHtml = ' <div class="page text-center" > <ul class="pagination"></ul></div>';
-        $('body').append(pageHtml);
-    }
-    $(".pagination").bootstrapPaginator({
-        bootstrapMajorVersion: 3,
-        currentPage: res.currentPage,
-        totalPages: res.totalPage,
-        onPageClicked: function (event,originalEvent,type,page) {
-            currentPage = page;
-            callback && callback(currentPage)
-        }
-    })
-}
 
 /**
  * 列表宽

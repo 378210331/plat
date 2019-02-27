@@ -1,6 +1,6 @@
 package com.hsy.platform.controller;
 
-import com.hsy.platform.plugin.Page;
+import com.hsy.platform.plugin.LayPage;
 import com.hsy.platform.plugin.PageData;
 import com.hsy.platform.service.SystemService;
 import com.hsy.platform.utils.UuidUtil;
@@ -40,7 +40,7 @@ public class SubSystemController extends BaseController {
 
     @RequestMapping("list")
     @ResponseBody
-    public Page list(Page page) throws Exception {
+    public LayPage list(LayPage page) throws Exception {
         page.setPd(this.getPageData());
         page =systemService .listPage(page);
         return page ;

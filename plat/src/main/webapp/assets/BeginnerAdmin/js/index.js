@@ -58,12 +58,24 @@ layui.config({
         });
     }).resize();
 
+    var navData = "";
+    //获取菜单数据
+    $.ajax({
+        type: "get",
+        url: _ctx +"/menu/getRoleMenu",
+        cache:false,
+        async:false,
+        success: function(data){
+            navData = data;
+        }
+    });
+
     //设置navbar
     navbar.set({
         spreadOne: true,
         elem: '#admin-navbar-side',
         cached: true,
-        data: navs
+        data: navData
 		/*cached:true,
 		url: 'datas/nav.json'*/
     });

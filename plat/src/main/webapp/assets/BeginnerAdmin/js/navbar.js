@@ -8,9 +8,9 @@ layui.define(['element', 'common'], function (exports) {
         cacheName = 'tb_navbar';
 
     var Navbar = function () {
-		/**
-		 *  默认配置 
-		 */
+        /**
+         *  默认配置
+         */
         this.config = {
             elem: undefined, //容器
             data: undefined, //数据源
@@ -112,21 +112,21 @@ layui.define(['element', 'common'], function (exports) {
         }
         return _that;
     };
-	/**
-	 * 配置Navbar
-	 * @param {Object} options
-	 */
+    /**
+     * 配置Navbar
+     * @param {Object} options
+     */
     Navbar.prototype.set = function (options) {
         var that = this;
         that.config.data = undefined;
         $.extend(true, that.config, options);
         return that;
     };
-	/**
-	 * 绑定事件
-	 * @param {String} events
-	 * @param {Function} callback
-	 */
+    /**
+     * 绑定事件
+     * @param {String} events
+     * @param {Function} callback
+     */
     Navbar.prototype.on = function (events, callback) {
         var that = this;
         var _con = that.config.elem;
@@ -179,16 +179,16 @@ layui.define(['element', 'common'], function (exports) {
             }
         }
     };
-	/**
-	 * 清除缓存
-	 */
+    /**
+     * 清除缓存
+     */
     Navbar.prototype.cleanCached = function () {
         layui.data(cacheName, null);
     };
-	/**
-	 * 获取html字符串
-	 * @param {Object} data
-	 */
+    /**
+     * 获取html字符串
+     * @param {Object} data
+     */
     function getHtml(data) {
         //debugger;
         var ulHtml = '<ul class="layui-nav layui-nav-tree beg-navbar">';

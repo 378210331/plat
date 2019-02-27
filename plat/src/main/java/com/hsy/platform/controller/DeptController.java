@@ -1,6 +1,6 @@
 package com.hsy.platform.controller;
 
-import com.hsy.platform.plugin.Page;
+import com.hsy.platform.plugin.LayPage;
 import com.hsy.platform.plugin.PageData;
 import com.hsy.platform.service.DeptService;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class DeptController extends BaseController {
 
     @RequestMapping("list")
     @ResponseBody
-    public Page list(Page page) throws Exception {
+    public LayPage list(LayPage page) throws Exception {
         page.setPd(this.getPageData());
         page =deptService .listPage(page);
         return page ;

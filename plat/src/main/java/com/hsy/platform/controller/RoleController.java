@@ -1,7 +1,7 @@
 package com.hsy.platform.controller;
 
 import com.hsy.platform.dao.DaoSupport;
-import com.hsy.platform.plugin.Page;
+import com.hsy.platform.plugin.LayPage;
 import com.hsy.platform.plugin.PageData;
 import com.hsy.platform.service.RoleService;
 import com.hsy.platform.utils.UuidUtil;
@@ -41,7 +41,7 @@ public class RoleController extends BaseController {
 
     @RequestMapping("list")
     @ResponseBody
-    public Page list(Page page) throws Exception {
+    public LayPage list(LayPage page) throws Exception {
         page.setPd(this.getPageData());
         page = roleService .listPage(page);
         return page ;

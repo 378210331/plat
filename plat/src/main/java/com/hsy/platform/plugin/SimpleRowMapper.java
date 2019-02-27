@@ -1,5 +1,6 @@
 package com.hsy.platform.plugin;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.math.BigDecimal;
@@ -71,7 +72,7 @@ public class SimpleRowMapper implements RowMapper<Map<String,Object>> {
     	String[] arr = fieldName.split("_");
     	StringBuilder sb = new StringBuilder(arr[0]);
     	for(int i=1;i<arr.length;i++){
-    		if("".equals("s"))continue;
+    		if(StringUtils.isBlank(arr[i]))continue;
     		String s = arr[i];
     		sb.append(s.substring(0, 1).toUpperCase()).append(s.substring(1));
     	}
