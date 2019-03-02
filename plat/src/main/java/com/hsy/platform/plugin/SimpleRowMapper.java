@@ -3,6 +3,7 @@ package com.hsy.platform.plugin;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -17,7 +18,7 @@ import java.util.Map;
  * 返回驼峰字段类型
  * @author husiyi
  */
-public class SimpleRowMapper implements RowMapper<Map<String,Object>> {
+public class SimpleRowMapper implements RowMapper<Map<String,Object>> ,Serializable {
 
 	public Map<String,Object> mapRow(ResultSet rs, int arg1) throws SQLException {
 		 Map<String,Object> obj = new HashMap<String,Object>();

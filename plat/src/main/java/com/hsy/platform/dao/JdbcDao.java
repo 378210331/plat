@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +47,8 @@ public class JdbcDao implements ApplicationContextAware {
      * @return
      */
     public Map<String,Object> queryMapBySql(String sql){
-        return jdbcTemplate.queryForMap(sql,new SimpleRowMapper());
+        List<Map<String,Object>>  mapList =  jdbcTemplate.query(sql,new SimpleRowMapper());
+        return mapList.size()>0?mapList.get(0):new HashMap<String, Object>();
     }
 
 
@@ -57,7 +59,8 @@ public class JdbcDao implements ApplicationContextAware {
      * @return
      */
     public Map<String,Object> queryMapBySql(String sql,Object...param){
-        return jdbcTemplate.queryForMap(sql,param,new SimpleRowMapper());
+        List<Map<String,Object>>  mapList =  jdbcTemplate.query(sql,param,new SimpleRowMapper());
+        return mapList.size()>0?mapList.get(0):new HashMap<String, Object>();
     }
 
 

@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class MenuRowMapper implements RowMapper<Map<String,Object>> {
+public class MenuRowMapper implements RowMapper<Map<String,Object>>, Serializable {
 
 
     @Resource

@@ -6,6 +6,9 @@ import com.hsy.platform.plugin.PageData;
 import com.hsy.platform.service.MenuService;
 import com.hsy.platform.service.SystemService;
 import com.hsy.platform.utils.LoginInfoUtils;
+import com.hsy.platform.utils.PropertiesUtils;
+import com.hsy.platform.utils.UuidUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -32,7 +35,7 @@ public class MenuController extends BaseController {
     @RequestMapping("getRoleMenu")
     @ResponseBody
     public List<Map<String,Object>> getRoleMenu(){
-        if("89757".equalsIgnoreCase(LoginInfoUtils.getUserId())){
+        if(PropertiesUtils.getValueByKey("superManager").contains(LoginInfoUtils.getUserId())){
             return menuService.getAllMenu(null);
         }
         return menuService.getRoleMenu(LoginInfoUtils.getUserId(),null);
@@ -50,8 +53,14 @@ public class MenuController extends BaseController {
     @RequestMapping("onEdit")
     public ModelAndView onEdit() throws Exception {
         ModelAndView mv = new ModelAndView("security/menu_edit");
-        mv.addObject("menuId",getRequest().getParameter("menuId"));
-        mv.addObject("newId",menuService.createMenuId());
+        String menuId = getRequest().getParameter("menuId");
+        if(StringUtils.isBlank(menuId)){
+            mv.addObject("editType","save");
+            menuId = UuidUtil.get14DateTimeId();
+        }else{
+            mv.addObject("editType","update");
+        }
+        mv.addObject("menuId",menuId);
         List<PageData> systemList = systemService.getPageDataList(null);
         PageData param = new PageData().addParam("menuType","0");
         List<PageData> pMenuList = menuService.getPageDataList(param);

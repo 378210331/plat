@@ -6,6 +6,7 @@ import com.hsy.platform.plugin.MenuRowMapper;
 import com.hsy.platform.plugin.PageData;
 import com.hsy.platform.utils.LoginInfoUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -89,10 +90,6 @@ public class MenuService extends BaseService {
         return jdbcDao.getNamedParameterJdbcTemplate().query(sql,param,allMenuRowMapper);
     }
 
-    public String createMenuId (){
-        String sql  = "select max(menu_id)+1 as id from t_sys_menu";
-        return jdbcDao.queryMapBySql(sql).get("id").toString();
-    }
 
     /**
      * 删除菜单
@@ -100,8 +97,9 @@ public class MenuService extends BaseService {
      * @throws Exception
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(PageData pd) throws Exception {
-        getDao().delete(getMapperName()+".deleteGwMenu", pd);
+        getDao().delete(getMapperName()+".deletePosMenu", pd);
         getDao().delete(getMapperName()+".deleteRoleMenu", pd);
         getDao().delete(getMapperName()+".delete", pd);
     }

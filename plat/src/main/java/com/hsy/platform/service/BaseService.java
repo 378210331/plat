@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +28,10 @@ public abstract class BaseService {
     @Transactional(rollbackFor = {Exception.class})
     public void save(PageData pageData)throws Exception{
         dao.save(getMapperName()+".save", pageData);
-        throw new FileNotFoundException();
     }
 
     /**
-     * 批量新增
+     * 批量新增z
      * @param pdList
      * @throws Exception
      */
