@@ -67,7 +67,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
         <!-- mapper扫描 -->
-        <property name="mapperLocations" value="classpath*:mapper/*Mapper.xml">
+        <property name="mapperLocations" value="classpath*:mapper/**/*Mapper.xml">
         </property>
     </bean>
 

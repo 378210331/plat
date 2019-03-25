@@ -1,23 +1,21 @@
 package com.hsy.platform.utils;
 
-import com.hsy.platform.controller.BaseController;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 public class PropertiesUtils {
 
-    static final  Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
+    static final Logger logger  = LoggerFactory.getLogger(PropertiesUtils.class);
 
-    public  static  String  FILE_PATH = getFilePath();
     static  final  String  DEFAULT_FILENAME= "system.properties";
 
-    public static String getFilePath(){
+ /*   public static String getFilePath(){
         String os = System.getProperty("os.name");
         if(os.toLowerCase().contains("win")){
             FILE_PATH = PropertiesUtils.class.getResource("/").getPath().replace("test-classes","classes");
@@ -27,7 +25,7 @@ public class PropertiesUtils {
             FILE_PATH = classPath;
         }
         return FILE_PATH;
-    }
+    }*/
 
 
     /**
@@ -38,8 +36,9 @@ public class PropertiesUtils {
         Properties props = new Properties();
         InputStream in = null;
         try {
-            in = new FileInputStream(FILE_PATH + DEFAULT_FILENAME);
+            in =  PropertiesUtils.class.getResourceAsStream("/"+DEFAULT_FILENAME);
             props.load(in);
+            in.close();
         }catch (Exception e){
             logger.error("获取资源文件失败");
         }
@@ -54,8 +53,9 @@ public class PropertiesUtils {
         Properties props = new Properties();
         InputStream in = null;
         try {
-            in = new FileInputStream(FILE_PATH + filename);
+            in =  PropertiesUtils.class.getResourceAsStream("/"+filename);
             props.load(in);
+            in.close();
         }catch (Exception e){
             logger.error("获取资源文件失败");
         }
@@ -72,15 +72,11 @@ public class PropertiesUtils {
         if(StringUtils.isBlank(key)){
             return null;
         }else {
-            Properties props = new Properties();
-            InputStream in = null;
             try {
-                in = new FileInputStream(FILE_PATH + DEFAULT_FILENAME);
-                props.load(in);
+                Properties props = getProperties();
+                if(props.getProperty(key) == null)return null;
                 String value = new String(props.getProperty(key).getBytes("ISO-8859-1"), "UTF-8");
-                in.close();
                 return value;
-
             } catch (IOException e) {
                 logger.warn("获取资源值错误" + e.getMessage());
                 return null;
@@ -94,25 +90,15 @@ public class PropertiesUtils {
      * @param file_name
      * @return
      */
-    public static String getValueByKey(String key,String file_name){
+    public static String getValueByKey(String key,String file_name) throws UnsupportedEncodingException {
         if(StringUtils.isBlank(key)){
             return null;
         }else {
-            Properties props = new Properties();
-            InputStream in = null;
-            try {
-                in = new FileInputStream(FILE_PATH + file_name);
-                props.load(in);
-                String value = props.getProperty(key);
-                // 有乱码时要进行重新编码
-                // new String(props.getProperty("name").getBytes("ISO-8859-1"), "UTF-8");
-                in.close();
-                return value;
-
-            } catch (IOException e) {
-                logger.warn("获取资源值错误" + e.getMessage());
-                return null;
-            }
+            Properties props = getProperties(file_name);
+            if(props.getProperty(key) == null)return null;
+            // 有乱码时要进行重新编码
+            String value = new String(props.getProperty(key).getBytes("ISO-8859-1"), "UTF-8");
+            return value;
         }
     }
 

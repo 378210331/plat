@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="DictMapper">
+	<select id="getList" parameterType="java.lang.String"
+		resultType="pd">
+		select dict_code code,dict_value value from t_sys_dict where
+		dict_name=#{key} and yxbz='Y' order by sort_num asc
+	</select>
+
+
+	<select id="getTreeList" parameterType="pd" resultType="pd">
+		select dict_code code,dict_value value,dict_pcode pcode from t_sys_dict
+		where dict_name=#{key} and yxbz='Y'
+		<if test="start!=null and start!=''">
+			start with dict_pcode = #{start}
+			connect by prior dict_code = dict_pcode
+		</if>
+		<if test="start ==null or start == ''">
+			start with dict_pcode is null
+			connect by prior dict_code = dict_pcode
+		</if>
+		order by sort_num asc
+	</select>
+</mapper>
